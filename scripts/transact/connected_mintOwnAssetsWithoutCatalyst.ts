@@ -67,23 +67,28 @@ const args = process.argv.slice(2);
     receipt.blockNumber
   );
 
-  const eventArgs = eventsMatching[0].args;
-  if (eventArgs) {
-    console.log({
-      from: eventArgs.from,
-      to: eventArgs.to,
-      ids: eventArgs.ids.map((v: BigNumber) => v.toString()),
-      // quantities: (eventArgs?[3] as any).map((v: BigNumber) => v.toString()),
-    });
-    if (eventArgs[3]) {
-      const quantities: BigNumber[] = eventArgs[3];
-      try {
-        console.log({
-          quantities: quantities.map((v: BigNumber) => v.toString()),
-        });
-      } catch (e) {
-        console.error('ERROR quantities:', e);
+  try {
+    const eventArgs = eventsMatching[0].args;
+    if (eventArgs) {
+      console.log({
+        from: eventArgs.from,
+        to: eventArgs.to,
+        ids: eventArgs.ids.map((v: BigNumber) => v.toString()),
+        // quantities: (eventArgs?[3] as any).map((v: BigNumber) => v.toString()),
+      });
+      if (eventArgs[3]) {
+        const quantities: BigNumber[] = eventArgs[3];
+        try {
+          console.log({
+            quantities: quantities.map((v: BigNumber) => v.toString()),
+          });
+        } catch (e) {
+          console.error('ERROR quantities:', e);
+        }
       }
     }
+  } catch (e) {
+    console.error(e);
+    console.log(receipt);
   }
 })();
