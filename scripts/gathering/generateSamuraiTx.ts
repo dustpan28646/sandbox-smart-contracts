@@ -38,7 +38,7 @@ const addresses = [
   '0x351d626b339ca5ffdcf4e088cd8cfa36d789cbcd',
   '0xc91faf934708a5e3b3ff8ed212904c4efd2aaf57',
   '0x98d562c7a4781e3e6c0d16f67469b0a3b0cb25c7',
-  '0x9d69a3228d510ebd7860b431576c47751431e459 ',
+  '0x9d69a3228d510ebd7860b431576c47751431e459',
   '0xf19564F016E99F8c40C2aB756BdC1895698297a0',
   '0x517FF5B16C6059A5D9957420ccD05D7C8cAbd9fB',
   '0xDB7296D0Ed965f07bF2ac6392e4253609Aee2198',
@@ -87,6 +87,7 @@ const addresses = [
   '0x8C2E67Bd3D0f432eF75D9AE6623Cd0DFbCE66050',
   '0x33aC220f92733c129722B46726B01a927f6c092C',
 ];
+
 const ids = [];
 const amounts = [];
 for (const address of addresses) {
