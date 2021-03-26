@@ -1,3 +1,4 @@
+import {isAddress} from '@ethersproject/address';
 import {read} from '../utils/spreadsheet';
 
 const AssetAddress = '0xa342f5d851e866e18ff98f351f2c6637f4478db5';
@@ -29,8 +30,6 @@ const tokenIds: {[name: string]: string} = {
 };
 
 let addresses: string[] = [];
-let ids: string[] = [];
-let amounts: number[] = [];
 async function main() {
   const data = await read(
     {document: '1UGGMtl8L9qY7MgVSfz5YM4iOCQa5lOK3rcv1rDCr0RE', sheet: 'Sheet1'},
@@ -43,10 +42,20 @@ async function main() {
     if (!tokenId) {
       throw new Error(`unknown token: ${row[1]}`);
     }
-    ids.push(tokenId);
-    amounts.push(1);
 
-    if (amounts.length === 100) {
+    if (addresses.length === 100) {
+      const actualAddresses = [];
+      const ids = [];
+      const amounts = [];
+      for (let i = 0; i < addresses.length; i++) {
+        if (isAddress(addresses[i])) {
+          actualAddresses.push(addresses[i]);
+          ids.push(tokenId);
+          amounts.push(1);
+        } else {
+          console.error(addresses[i]);
+        }
+      }
       console.log(`
 
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -58,7 +67,7 @@ function: send1155ToAddresses
 
 args:
 
-- ${addresses.join(',')}
+- ${actualAddresses.join(',')}
 
 
 - ${ids.join(',')}
@@ -70,8 +79,6 @@ args:
 - ${AssetAddress}
 `);
       addresses = [];
-      ids = [];
-      amounts = [];
     }
   }
 
