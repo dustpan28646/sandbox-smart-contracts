@@ -1,5 +1,6 @@
 import {read} from '../utils/spreadsheet';
 
+const AssetAddress = '0xa342f5d851e866e18ff98f351f2c6637f4478db5';
 const tokenIds: {[name: string]: string} = {
   rat:
     '55464657044963196816950587289035428064568320970692304673817341489687623131142',
@@ -27,9 +28,9 @@ const tokenIds: {[name: string]: string} = {
     '55464657044963196816950587289035428064568320970692304673817341489687623131145',
 };
 
-const addresses: string[] = [];
-const ids: string[] = [];
-const amounts: number[] = [];
+let addresses: string[] = [];
+let ids: string[] = [];
+let amounts: number[] = [];
 async function main() {
   const data = await read(
     {document: '1UGGMtl8L9qY7MgVSfz5YM4iOCQa5lOK3rcv1rDCr0RE', sheet: 'Sheet1'},
@@ -44,15 +45,50 @@ async function main() {
     }
     ids.push(tokenId);
     amounts.push(1);
-  }
-  console.log(`
+
+    if (amounts.length === 100) {
+      console.log(`
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
 execute the following on 0xc653e1b3a971078812a72d11c45ad71e00f3ad1f (MultiSender)
+
 function: send1155ToAddresses
+
 args:
- - ${addresses.join(',')}
- - ${ids.join(',')}
- - ${amounts.join(',')}
+
+- ${addresses.join(',')}
+
+
+- ${ids.join(',')}
+
+
+- ${amounts.join(',')}
+
+
+- ${AssetAddress}
 `);
+      addresses = [];
+      ids = [];
+      amounts = [];
+    }
+  }
+
+  // function send1155ToAddresses(
+  //   address[] calldata userAddresses,
+  //   uint256[] calldata tokenIds,
+  //   uint256[] calldata amounts,
+  //   address tokenAddress)
+  //   console.log(`
+  // execute the following on 0xc653e1b3a971078812a72d11c45ad71e00f3ad1f (MultiSender)
+  // function: send1155ToAddresses
+  // args:
+  //  - ${addresses.join(',')}
+  //  - ${ids.join(',')}
+  //  - ${amounts.join(',')}
+  //  - ${AssetAddress}
+  // `);
 }
 
 main().catch((e) => console.error(e));
